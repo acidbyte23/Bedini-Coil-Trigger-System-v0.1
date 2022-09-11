@@ -1,0 +1,107 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: ÂµVision V5.30.0.0
+Copyright (C) 2020 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Jeroen van Dijk, Acid Byte, LIC=----
+ 
+Tool Versions:
+Toolchain:       MDK-Lite  Version: 5.30.0.0
+Toolchain Path:  X:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 6 (build 750)
+Assembler:       Armasm.exe V5.06 update 6 (build 750)
+Linker/Locator:  ArmLink.exe V5.06 update 6 (build 750)
+Library Manager: ArmAr.exe V5.06 update 6 (build 750)
+Hex Converter:   FromElf.exe V5.06 update 6 (build 750)
+CPU DLL:         SARMCM3.DLL V5.30.0.0
+Dialog DLL:      DCM.DLL V1.17.3.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.7.0
+Dialog DLL:      TCM.DLL V1.42.0.0
+ 
+<h2>Project:</h2>
+X:\Electronics\CubeMX\Bedini Coil System\Bedini Coil Trigger System v0.1\MDK-ARM\Bedini Coil Trigger System v0.1.uvprojx
+Project File Date:  09/11/2022
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 6 (build 750)', folder: 'X:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'Bedini Coil Trigger System v0.1'
+assembling startup_stm32f446xx.s...
+compiling main.c...
+../Core/Src/main.c(157): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			rpmPulse = (((1000000.0 / (float)comparePulse[2]) * 60.0) / (float)MAGNETS_ON_ROTOR);
+../Core/Src/main.c(167): error:  #142: expression must have pointer-to-object type
+  					if(pulseTrigger[0] == 1){
+../Core/Src/main.c(169): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  						rpmPulse = (((1000000.0 / (float)comparePulse[2]) * 60.0) / (float)MAGNETS_ON_ROTOR);
+../Core/Src/main.c(176): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			voltageBattery = (((float)MAX_BATTERY_VOLTAGE / 4095.0) * (float)analogInputs[0]); // to be verified
+../Core/Src/main.c(177): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			currentBattery = (((float)MAX_BATTERY_CURRENT / 4095.0) * (float)analogInputs[1]); // to be verified
+../Core/Src/main.c(179): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			delayPulse =(((float) comparePulse[2] / 1000.0) * ((900.0 / 4095.0) * (float)analogInputs[2])); // rpm percentage delay
+../Core/Src/main.c(183): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				widthPulse = ((((float)MAX_PULSE_WIDTH / 4095.0) * (float)analogInputs[3]) * (float)STEP_MULTIPLIER_WIDTH); // to be verified 1000 = 1mS  * multiplier
+../Core/Src/main.c(187): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				widthPulse = (((float)comparePulse[2] / 10000.0) * ((5000.0 / 4095.0) * (((float)analogInputs[3] / 100.0) * multiplierPid)));//(float) analogInputs[3])); // 0-50% duty cycle
+../Core/Src/main.c(187): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				widthPulse = (((float)comparePulse[2] / 10000.0) * ((5000.0 / 4095.0) * (((float)analogInputs[3] / 100.0) * multiplierPid)));//(float) analogInputs[3])); // 0-50% duty cycle
+../Core/Src/main.c(205): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  						multiplierPid = 100.0 + ((float)rpmError / 1000.0);
+../Core/Src/main.c(208): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  						multiplierPid = 100.0 - ((float)rpmError / 1000.0);
+../Core/Src/main.c: 10 warnings, 1 error
+compiling stm32f4xx_it.c...
+../Core/Src/stm32f4xx_it.c(222): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	totalPulseTime = ((float)(((float)delayPulse + (float)widthPulse) / 100.0) * (float)multiplierPulse);
+../Core/Src/stm32f4xx_it.c: 1 warning, 0 errors
+compiling stm32f4xx_hal_msp.c...
+compiling stm32f4xx_hal_adc_ex.c...
+compiling stm32f4xx_hal_adc.c...
+compiling stm32f4xx_hal_rcc.c...
+compiling stm32f4xx_hal_rcc_ex.c...
+compiling stm32f4xx_hal_flash_ex.c...
+compiling stm32f4xx_hal_flash.c...
+compiling stm32f4xx_hal_flash_ramfunc.c...
+compiling stm32f4xx_hal_gpio.c...
+compiling stm32f4xx_hal_dma.c...
+compiling stm32f4xx_hal_pwr.c...
+compiling stm32f4xx_hal_dma_ex.c...
+compiling stm32f4xx_hal_pwr_ex.c...
+compiling stm32f4xx_hal_cortex.c...
+compiling stm32f4xx_hal_exti.c...
+compiling stm32f4xx_hal.c...
+compiling stm32f4xx_hal_uart.c...
+compiling stm32f4xx_hal_tim_ex.c...
+compiling stm32f4xx_hal_tim.c...
+compiling system_stm32f4xx.c...
+"Bedini Coil Trigger System v0.1\Bedini Coil Trigger System v0.1" - 1 Error(s), 11 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.7.0.pack
+                ARM.CMSIS.5.7.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.4.0
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32F4xx_DFP.2.14.0.pack
+                Keil.STM32F4xx_DFP.2.14.0
+                STMicroelectronics STM32F4 Series Device Support, Drivers and Examples
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\_Bedini_Coil_Trigger_System_v0.1
+  C:\Users\Acid Byte\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include
+  C:\Users\Acid Byte\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.14.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.4.0
+      Include file:  CMSIS\Core\Include\tz_context.h
+Target not created.
+Build Time Elapsed:  00:00:43
+</pre>
+</body>
+</html>
