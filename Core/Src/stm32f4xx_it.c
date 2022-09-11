@@ -216,6 +216,7 @@ void EXTI0_IRQHandler(void)
   /* USER CODE BEGIN EXTI0_IRQn 0 */
 	
 	//Catch timer value and set to 0
+	comparePulse[1] = comparePulse[0];
 	comparePulse[0] = __HAL_TIM_GET_COUNTER(&htim1);
 	
 	__HAL_TIM_SET_COUNTER(&htim1,0);  // set the counter value a 0

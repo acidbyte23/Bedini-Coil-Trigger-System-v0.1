@@ -151,7 +151,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		if(pulseTrigger == 1){
+		if((pulseTrigger == 1)){
 			comparePulse[1] = comparePulse[0];
 			comparePulse[2] = (comparePulse[0] + comparePulse[1]) / 2;
 			rpmPulse = (((1000000.0 / (float)comparePulse[2]) * 60.0) / (float)MAGNETS_ON_ROTOR);
@@ -164,7 +164,7 @@ int main(void)
 		while( pulseTrigger == 0){
 			HAL_ADC_Start_DMA(&hadc1, (uint32_t*) analogInputs, analogChCounts);
 			while(analogConvComplete == 0){
-					if(pulseTrigger[0] == 1){
+					if(pulseTrigger == 1){
 			
 						rpmPulse = (((1000000.0 / (float)comparePulse[2]) * 60.0) / (float)MAGNETS_ON_ROTOR);
 						pulseTrigger = 0;
