@@ -74,6 +74,7 @@ volatile uint32_t rpmDifference;
 
 // Analog Inputs
 volatile uint32_t analogInputs[4];
+volatile uint32_t analogInAvg[4][4];
 const int analogChCounts = sizeof ( analogInputs) / sizeof (analogInputs[0]);
 volatile int analogConvComplete = 0;
 
@@ -83,6 +84,10 @@ volatile uint32_t widthPulse = 0;
 volatile uint32_t comparePulse[3];
 volatile uint32_t rpmPulse = 0;
 volatile int multiplierPulse = 100;
+volatile uint32_t voltageAvg;
+volatile uint32_t currentAvg;
+volatile uint32_t delayAvg;
+volatile uint32_t widthAvg;
 
 volatile uint32_t voltageBattery = 0;
 volatile uint32_t currentBattery = 0;
@@ -173,18 +178,32 @@ int main(void)
 			}
 			analogConvComplete = 0;
 			
-			voltageBattery = (((float)MAX_BATTERY_VOLTAGE / 4095.0) * (float)analogInputs[0]); // to be verified
-			currentBattery = (((float)MAX_BATTERY_CURRENT / 4095.0) * (float)analogInputs[1]); // to be verified
+			for(int i = 0;i <= 3;i++){
+				analogInAvg[i][0] = analogInputs[i];
+			}
+			for(int i = 3;i >= 0;i--){
+				for(int ii = 0;ii <= 3;ii++){
+					analogInAvg[i][ii] = analogInAvg[(i-1)][ii];
+				}
+			}
+			voltageAvg = (analogInAvg[0][0] + analogInAvg[1][1] + analogInAvg[2][0] + analogInAvg[3][0]) / 4;
+			currentAvg = (analogInAvg[0][1] + analogInAvg[1][1] + analogInAvg[2][1] + analogInAvg[3][1]) / 4;
+			delayAvg = (analogInAvg[0][2] + analogInAvg[1][2] + analogInAvg[2][2] + analogInAvg[3][2]) / 4;
+			widthAvg = (analogInAvg[0][3] + analogInAvg[1][3] + analogInAvg[2][3] + analogInAvg[3][3]) / 4;
+			
+			
+			voltageBattery = (((float)MAX_BATTERY_VOLTAGE / 4095.0) * (float)voltageAvg); // to be verified
+			currentBattery = (((float)MAX_BATTERY_CURRENT / 4095.0) * (float)currentAvg); // to be verified
 			//delayPulse = (((MAX_PULSE_DELAY / 4095) * analogInputs[2]) * STEP_MULTIPLIER_DELAY);//analogInputs[2]); // to be verified 1000 = 1mS  * multiplier
-			delayPulse =(((float) comparePulse[2] / 1000.0) * ((900.0 / 4095.0) * (float)analogInputs[2])); // rpm percentage delay
+			delayPulse =(((float) comparePulse[2] / 1000.0) * ((900.0 / 4095.0) * (float)delayAvg)); // rpm percentage delay
 			
 			if(modeWidthPulse == 1){
 				// timed width
-				widthPulse = ((((float)MAX_PULSE_WIDTH / 4095.0) * (float)analogInputs[3]) * (float)STEP_MULTIPLIER_WIDTH); // to be verified 1000 = 1mS  * multiplier
+				widthPulse = ((((float)MAX_PULSE_WIDTH / 4095.0) * (float)widthAvg) * (float)STEP_MULTIPLIER_WIDTH); // to be verified 1000 = 1mS  * multiplier
 			}
 			else{
 				// duty cycle
-				widthPulse = (((float)comparePulse[2] / 10000.0) * ((5000.0 / 4095.0) * (((float)analogInputs[3] / 100.0) * multiplierPid)));//(float) analogInputs[3])); // 0-50% duty cycle
+				widthPulse = (((float)comparePulse[2] / 10000.0) * ((5000.0 / 4095.0) * (((float)widthAvg / 100.0) * multiplierPid)));//(float) analogInputs[3])); // 0-50% duty cycle
 			}
 			//comparePulse = 0;
 			

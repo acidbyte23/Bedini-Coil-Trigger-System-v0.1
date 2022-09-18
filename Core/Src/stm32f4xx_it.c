@@ -64,7 +64,6 @@ extern uint32_t widthPulse;
 extern int pulseTrigger;
 
 extern uint32_t comparePulse [2];
-extern uint32_t lastPulse;
 extern uint32_t rpmPulse;
 extern uint32_t rpmSetPulse;
 extern int multiplierPulse;
@@ -214,6 +213,8 @@ void SysTick_Handler(void)
 void EXTI0_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI0_IRQn 0 */
+	// Write pulse LOW
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, GPIO_PIN_RESET);
 	
 	//Catch timer value and set to 0
 	comparePulse[1] = comparePulse[0];

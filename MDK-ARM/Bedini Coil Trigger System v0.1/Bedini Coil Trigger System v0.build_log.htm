@@ -32,21 +32,21 @@ compiling main.c...
   			rpmPulse = (((1000000.0 / (float)comparePulse[2]) * 60.0) / (float)MAGNETS_ON_ROTOR);
 ../Core/Src/main.c(174): warning:  #1035-D: single-precision operand implicitly converted to double-precision
   						rpmPulse = (((1000000.0 / (float)comparePulse[2]) * 60.0) / (float)MAGNETS_ON_ROTOR);
-../Core/Src/main.c(181): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  			voltageBattery = (((float)MAX_BATTERY_VOLTAGE / 4095.0) * (float)analogInputs[0]); // to be verified
-../Core/Src/main.c(182): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  			currentBattery = (((float)MAX_BATTERY_CURRENT / 4095.0) * (float)analogInputs[1]); // to be verified
-../Core/Src/main.c(184): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  			delayPulse =(((float) comparePulse[2] / 1000.0) * ((900.0 / 4095.0) * (float)analogInputs[2])); // rpm percentage delay
-../Core/Src/main.c(188): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  				widthPulse = ((((float)MAX_PULSE_WIDTH / 4095.0) * (float)analogInputs[3]) * (float)STEP_MULTIPLIER_WIDTH); // to be verified 1000 = 1mS  * multiplier
-../Core/Src/main.c(192): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  				widthPulse = (((float)comparePulse[2] / 10000.0) * ((5000.0 / 4095.0) * (((float)analogInputs[3] / 100.0) * multiplierPid)));//(float) analogInputs[3])); // 0-50% duty cycle
-../Core/Src/main.c(192): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  				widthPulse = (((float)comparePulse[2] / 10000.0) * ((5000.0 / 4095.0) * (((float)analogInputs[3] / 100.0) * multiplierPid)));//(float) analogInputs[3])); // 0-50% duty cycle
+../Core/Src/main.c(195): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			voltageBattery = (((float)MAX_BATTERY_VOLTAGE / 4095.0) * (float)voltageAvg); // to be verified
+../Core/Src/main.c(196): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			currentBattery = (((float)MAX_BATTERY_CURRENT / 4095.0) * (float)currentAvg); // to be verified
+../Core/Src/main.c(198): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			delayPulse =(((float) comparePulse[2] / 1000.0) * ((900.0 / 4095.0) * (float)delayAvg)); // rpm percentage delay
+../Core/Src/main.c(202): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				widthPulse = ((((float)MAX_PULSE_WIDTH / 4095.0) * (float)widthAvg) * (float)STEP_MULTIPLIER_WIDTH); // to be verified 1000 = 1mS  * multiplier
+../Core/Src/main.c(206): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				widthPulse = (((float)comparePulse[2] / 10000.0) * ((5000.0 / 4095.0) * (((float)widthAvg / 100.0) * multiplierPid)));//(float) analogInputs[3])); // 0-50% duty cycle
+../Core/Src/main.c(206): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				widthPulse = (((float)comparePulse[2] / 10000.0) * ((5000.0 / 4095.0) * (((float)widthAvg / 100.0) * multiplierPid)));//(float) analogInputs[3])); // 0-50% duty cycle
 ../Core/Src/main.c: 8 warnings, 0 errors
 linking...
-Program Size: Code=11388 RO-data=516 RW-data=92 ZI-data=2044  
+Program Size: Code=11528 RO-data=516 RW-data=108 ZI-data=2108  
 FromELF: creating hex file...
 "Bedini Coil Trigger System v0.1\Bedini Coil Trigger System v0.1" - 0 Error(s), 8 Warning(s).
 

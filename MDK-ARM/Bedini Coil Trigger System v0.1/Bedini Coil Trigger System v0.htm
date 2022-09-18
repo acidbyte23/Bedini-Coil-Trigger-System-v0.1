@@ -3,7 +3,7 @@
 <title>Static Call Graph - [Bedini Coil Trigger System v0.1\Bedini Coil Trigger System v0.1]</title></head>
 <body><HR>
 <H1>Static Call Graph for image Bedini Coil Trigger System v0.1\Bedini Coil Trigger System v0.1</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sun Sep 18 14:18:31 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sun Sep 18 17:11:05 2022
 <BR><P>
 <H3>Maximum Stack Usage =        224 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -616,7 +616,7 @@ Global Symbols
 <P><STRONG><a name="[a]"></a>DebugMon_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f4xx_it.o(i.DebugMon_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f446xx.o(RESET)
 </UL>
-<P><STRONG><a name="[13]"></a>EXTI0_IRQHandler</STRONG> (Thumb, 134 bytes, Stack size 16 bytes, stm32f4xx_it.o(i.EXTI0_IRQHandler))
+<P><STRONG><a name="[13]"></a>EXTI0_IRQHandler</STRONG> (Thumb, 144 bytes, Stack size 16 bytes, stm32f4xx_it.o(i.EXTI0_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = EXTI0_IRQHandler &rArr; HAL_GPIO_EXTI_IRQHandler
 </UL>
 <BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_EXTI_IRQHandler
@@ -1007,7 +1007,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f446xx.o(RESET)
 </UL>
-<P><STRONG><a name="[75]"></a>main</STRONG> (Thumb, 766 bytes, Stack size 48 bytes, main.o(i.main))
+<P><STRONG><a name="[75]"></a>main</STRONG> (Thumb, 900 bytes, Stack size 48 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 224<LI>Call Chain = main &rArr; SystemClock_Config &rArr; HAL_RCC_ClockConfig &rArr; HAL_RCC_GetSysClockFreq &rArr; __aeabi_uldivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Init
