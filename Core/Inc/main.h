@@ -70,6 +70,8 @@ void Error_Handler(void);
 #define Hall_Trigger_In_EXTI_IRQn EXTI0_IRQn
 #define Inductor_Pulse_Pin GPIO_PIN_1
 #define Inductor_Pulse_GPIO_Port GPIOB
+#define Pid_Active_Pin GPIO_PIN_2
+#define Pid_Active_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

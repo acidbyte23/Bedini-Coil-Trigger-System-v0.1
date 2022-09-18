@@ -62,7 +62,12 @@ volatile uint32_t rpmSetPulse = 1500;
 volatile int modeWidthPulse = 0;
 
 // PID Settings
-volatile int activePid = 1 ;
+int MIN_BANDWIDTH_PID = 100;
+int MAX_BANDWIDTH_PID = 100;
+int MAX_TUNE_PID = 150;
+int MIN_TUNE_PID = 1;
+int DEADBAND_PID = 1;
+volatile int activePid = 1;
 volatile int bandwidthPulse = 100;
 volatile uint32_t rpmError;
 volatile uint32_t	multiplierPid;
@@ -188,6 +193,7 @@ int main(void)
 			}
 			//comparePulse = 0;
 			
+			/*
 			if(activePid == 1){
 				if(__HAL_TIM_GET_COUNTER(&htim1) >= timeTriggerPid){
 					if(rpmSetPulse > rpmPulse){
@@ -224,7 +230,34 @@ int main(void)
 			else if(multiplierPid < 1){
 				multiplierPid = 1;
 			}
+			*/
 				
+			if((activePid == 1)){
+				if(rpmPulse < (rpmSetPulse - MIN_BANDWIDTH_PID)){
+					multiplierPid = MAX_TUNE_PID;
+					rpmDifference = rpmSetPulse - rpmPulse;
+				}
+				else if(rpmPulse > (rpmSetPulse + MAX_BANDWIDTH_PID)){
+					multiplierPid = MIN_TUNE_PID;
+					rpmDifference = rpmPulse - rpmSetPulse;
+				}
+				else if((rpmPulse > (rpmSetPulse - MIN_BANDWIDTH_PID)) && (rpmPulse < (rpmSetPulse - DEADBAND_PID))){
+					rpmDifference = rpmSetPulse - rpmPulse;
+					multiplierPid = 100 + rpmDifference	;
+					
+					if(multiplierPid > MAX_TUNE_PID){
+						multiplierPid = MAX_TUNE_PID;
+					}
+				}
+				else if((rpmPulse < (rpmSetPulse + MAX_BANDWIDTH_PID)) && (rpmPulse > (rpmSetPulse + DEADBAND_PID))){
+					rpmDifference = rpmPulse - rpmSetPulse;
+					multiplierPid = 100 - rpmDifference;
+					
+					if(multiplierPid > MAX_TUNE_PID){
+						multiplierPid = MIN_TUNE_PID;
+					}
+				}
+			}
 		}
 	}
   /* USER CODE END 3 */
@@ -540,6 +573,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   HAL_GPIO_Init(Inductor_Pulse_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : Pid_Active_Pin */
+  GPIO_InitStruct.Pin = Pid_Active_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(Pid_Active_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
