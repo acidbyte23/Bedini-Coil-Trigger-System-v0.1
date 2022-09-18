@@ -49,7 +49,7 @@ UART_HandleTypeDef huart5;
 
 /* USER CODE BEGIN PV */
 // Calculation Settings
-const uint32_t MAX_BATTERY_VOLTAGE = 6000; // ~3.3 volt = (60 / 18) = (170k -> 10k)
+const uint32_t MAX_BATTERY_VOLTAGE = 6000; // ~3.3 volt = (60 / 18) = (170k -> 10k) resolution of ~15mV
 const uint32_t MAX_BATTERY_CURRENT = 1000000; // to be calculated in uA
 const uint32_t MAX_PULSE_DELAY = 5000; // some value making 1 = 1 uS
 const uint32_t MAX_PULSE_WIDTH = 5000; // some value making 1 = 1 uS 
@@ -69,11 +69,8 @@ int MIN_TUNE_PID = 1;
 int DEADBAND_PID = 1;
 volatile int activePid = 1;
 volatile int bandwidthPulse = 100;
-volatile uint32_t rpmError;
 volatile uint32_t	multiplierPid;
 volatile uint32_t rpmDifference;
-volatile uint32_t timeTriggerPid;
-volatile uint32_t rpmBandwidthPid = 10;
 
 // Analog Inputs
 volatile uint32_t analogInputs[4];
@@ -85,8 +82,6 @@ volatile uint32_t delayPulse = 0;
 volatile uint32_t widthPulse = 0;
 volatile uint32_t comparePulse[3];
 volatile uint32_t rpmPulse = 0;
-volatile uint32_t lastRpmPulse = 0;
-volatile uint32_t lastPulse = 0;
 volatile int multiplierPulse = 100;
 
 volatile uint32_t voltageBattery = 0;
