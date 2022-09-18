@@ -21,6 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdlib.h>
 
 /* USER CODE END Includes */
 
@@ -93,6 +94,25 @@ volatile uint32_t voltageBattery = 0;
 volatile uint32_t currentBattery = 0;
 
 volatile int pulseTrigger;
+
+// WIFI SSID and PASSWORD
+uint8_t SSID[] = "Free Energy";
+uint8_t PASS[] = "Nternet23!";
+
+// uart data stuf
+uint8_t dataCounter;
+uint8_t data1[4];
+
+// Pre programmed Strings
+uint8_t Voltage[] = "Voltage: ";
+uint8_t Volt[] = " Volt";
+uint8_t Current[] = "Current: ";
+uint8_t Amps[] = " Amp";
+uint8_t RoundsPerSecond[] = "Motorspeed: ";
+uint8_t Rpm[] = " Rpm";
+uint8_t PulseWidth[] = "Pulsewidth: ";
+uint8_t uS[] = " uS";
+uint8_t Delay[] = "Delay: ";
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -146,6 +166,7 @@ int main(void)
   MX_TIM1_Init();
   MX_ADC2_Init();
   /* USER CODE BEGIN 2 */
+	// Init reference timer
 	HAL_TIM_Base_Start(&htim1);
   /* USER CODE END 2 */
 
@@ -207,46 +228,68 @@ int main(void)
 			}
 			//comparePulse = 0;
 			
-			/*
-			if(activePid == 1){
-				if(__HAL_TIM_GET_COUNTER(&htim1) >= timeTriggerPid){
-					if(rpmSetPulse > rpmPulse){
-						rpmDifference = rpmSetPulse - rpmPulse;
-					}
-					else if(rpmSetPulse < rpmPulse){
-						rpmDifference = rpmPulse - rpmSetPulse;
-					}
-					
-					rpmError = ((float)rpmSetPulse / (float)rpmDifference) * 100;
-					
-
-					
-					if(rpmSetPulse > (rpmPulse + rpmBandwidthPid)){
-						multiplierPid = 100.0 + ((float)rpmError / 1000.0);
-					}
-					else if(rpmSetPulse < (rpmPulse - rpmBandwidthPid)){
-						multiplierPid = 100.0 - ((float)rpmError / 1000.0);
-					}
-					else{}
-						
-					if( rpmPulse > rpmSetPulse ){
-							multiplierPid = 1;
-					}
-				}
-			}
-			else{
-				multiplierPid = 100;
+	/*		switch(dataCounter){
+				case 0:
+					//Send motor data over uart
+					HAL_UART_Transmit(&huart5,Voltage,sizeof(Voltage),10);
+					data1[0]=(voltageBattery >> 24) & 0xFF;
+					data1[1]=(voltageBattery >> 16) & 0xFF;
+					data1[2]=(voltageBattery >> 8) & 0xFF;
+					data1[3]=(voltageBattery) & 0xFF;
+					HAL_UART_Transmit(&huart5,data1,sizeof(data1),10);
+					HAL_UART_Transmit(&huart5,Volt,sizeof(Volt),10);
+					break;
+				case 10:
+					//Send motor data over uart
+					HAL_UART_Transmit(&huart5,Current,sizeof(Current),10);
+					data1[0]=(currentBattery >> 24) & 0xFF;
+					data1[1]=(currentBattery >> 16) & 0xFF;
+					data1[2]=(currentBattery >> 8) & 0xFF;
+					data1[3]=(currentBattery) & 0xFF;
+					HAL_UART_Transmit(&huart5,data1,sizeof(data1),10);
+					HAL_UART_Transmit(&huart5,Amps,sizeof(Amps),10);
+					break;
+				case 20:
+					//Send motor data over uart
+					HAL_UART_Transmit(&huart5,RoundsPerSecond,sizeof(RoundsPerSecond),10);
+					data1[0]=(rpmPulse >> 24) & 0xFF;
+					data1[1]=(rpmPulse >> 16) & 0xFF;
+					data1[2]=(rpmPulse >> 8) & 0xFF;
+					data1[3]=(rpmPulse) & 0xFF;
+					HAL_UART_Transmit(&huart5,data1,sizeof(data1),10);
+					HAL_UART_Transmit(&huart5,Rpm,sizeof(Rpm),10);
+					break;
+				case 30:
+					//Send motor data over uart
+					HAL_UART_Transmit(&huart5,PulseWidth,sizeof(PulseWidth),10);
+					data1[0]=(widthPulse >> 24) & 0xFF;
+					data1[1]=(widthPulse >> 16) & 0xFF;
+					data1[2]=(widthPulse >> 8) & 0xFF;
+					data1[3]=(widthPulse) & 0xFF;
+					HAL_UART_Transmit(&huart5,data1,sizeof(data1),10);
+					HAL_UART_Transmit(&huart5,uS,sizeof(uS),10);
+					break;
+				case 40:
+					//Send motor data over uart
+					HAL_UART_Transmit(&huart5,Delay,sizeof(Delay),10);
+					data1[0]=(delayPulse >> 24) & 0xFF;
+					data1[1]=(delayPulse >> 16) & 0xFF;
+					data1[2]=(delayPulse >> 8) & 0xFF;
+					data1[3]=(delayPulse) & 0xFF;
+					HAL_UART_Transmit(&huart5,data1,sizeof(data1),10);
+					HAL_UART_Transmit(&huart5,uS,sizeof(uS),10);
+					break;
 			}
 			
-			if(multiplierPid > 150){
-				multiplierPid = 150;
-			}
-			else if(multiplierPid < 1){
-				multiplierPid = 1;
-			}
-			*/
-				
-			if((activePid == 1)){
+			dataCounter++;
+			
+			if(dataCounter >= 50){
+					dataCounter = 0;
+			} */
+		
+
+			// PID
+			if(!(GPIOB->IDR &(1<<2))){
 				if(rpmPulse < (rpmSetPulse - MIN_BANDWIDTH_PID)){
 					multiplierPid = MAX_TUNE_PID;
 					rpmDifference = rpmSetPulse - rpmPulse;
@@ -605,6 +648,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
 	analogConvComplete = 1;
 }
+
 /* USER CODE END 4 */
 
 /**
